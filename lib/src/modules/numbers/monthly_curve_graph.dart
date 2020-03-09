@@ -1,7 +1,10 @@
+import 'package:corona_app/src/core/storage/preferences/preference_manager.dart';
 import 'package:corona_app/src/core/theme/custom_app_theme.dart';
 import 'package:corona_app/src/modules/numbers/models/world_list_response.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+
+import 'models/daily_covid_response.dart';
 
 class MonthlyCurveGraph extends StatefulWidget {
   final WorldListResponse listResponse;
@@ -15,7 +18,8 @@ class MonthlyCurveGraph extends StatefulWidget {
 class MonthlyCurveGraphState extends State<MonthlyCurveGraph> {
   bool isShowingMainData;
   final double barWidth = 7;
-
+  var dataMaxX = 4.0;
+  var dataMaxY = 10.0;
 
   @override
   void initState() {
@@ -84,14 +88,14 @@ class MonthlyCurveGraphState extends State<MonthlyCurveGraph> {
                       height: 15,
                       width: 15,
                       decoration: BoxDecoration(
-                        color: CustomAppTheme.themeRedColor,
+                        color: CustomAppTheme.themeGreenColor,
                         borderRadius: BorderRadius.all(Radius.circular(5)),
                       ),
                     ),
                     Padding(
                       padding: EdgeInsets.only(right: 20),
                       child: Text(
-                        "Deaths",
+                        "Recovered",
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 12,
@@ -107,7 +111,14 @@ class MonthlyCurveGraphState extends State<MonthlyCurveGraph> {
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.only(right: 16.0, left: 10.0),
-                  child: _getBarChart(),
+                  child: FutureBuilder(
+                      future: PreferenceManager().getDailyCovidResponse(),
+                      builder: (_, AsyncSnapshot<DailyCovidResponse> snapshot) {
+                        if (snapshot.hasData) {
+                          return _getBarChart(snapshot.data);
+                        }
+                        return Container();
+                      }),
                 ),
               ),
               const SizedBox(
@@ -135,7 +146,26 @@ class MonthlyCurveGraphState extends State<MonthlyCurveGraph> {
     );
   }
 
-  LineChartData sampleData2() {
+  LineChartData sampleData2(DailyCovidResponse data) {
+    List<FlSpot> spots = [];
+    List<FlSpot> spotsR = [];
+    dataMaxX = 0;
+    var tempI = 0, tempR = 0;
+    data.data.forEach((covid) {
+      var day = int.parse(covid.date
+          .substring(covid.date.lastIndexOf("/") + 1, covid.date.length));
+      if (covid.confirmed != null && (day % 10) == 0) {
+        dataMaxX += 3.5;
+        dataMaxY = ((covid.confirmed - tempI) / 10000);
+        tempI = covid.confirmed;
+        spots.add(FlSpot(dataMaxX, dataMaxY));
+      }
+      if (covid.recovered != null && (day % 10) == 0) {
+        spotsR.add(FlSpot(dataMaxX, ((covid.recovered - tempR) / 10000)));
+        tempR = covid.recovered;
+      }
+      print("data(x, y) : ($dataMaxX, $dataMaxY), ${spots.length}");
+    });
     return LineChartData(
       lineTouchData: const LineTouchData(
         enabled: false,
@@ -179,16 +209,18 @@ class MonthlyCurveGraphState extends State<MonthlyCurveGraph> {
               case 2:
                 return '10k';
               case 3:
-                return '20k';
+                return '60k';
               case 4:
-                return '30k';
+                return '100k';
               case 5:
-                return '50k';
+                return '150k';
+              case 6:
+                return '170k';
             }
             return '';
           },
-          margin: 8,
-          reservedSize: 20,
+          margin: 10,
+          reservedSize: 25,
         ),
       ),
       borderData: FlBorderData(
@@ -209,50 +241,21 @@ class MonthlyCurveGraphState extends State<MonthlyCurveGraph> {
             ),
           )),
       minX: 0,
-      maxX: 14,
-      maxY: 6,
+      maxX: dataMaxX + 1,
+      maxY: dataMaxY + 1,
       minY: 0,
-      lineBarsData: linesBarData2(),
+      lineBarsData: linesBarData2(spots, spotsR),
     );
   }
 
-  List<LineChartBarData> linesBarData2() {
+  List<LineChartBarData> linesBarData2(
+      List<FlSpot> spots, List<FlSpot> spotsR) {
     return [
-      const LineChartBarData(
-        spots: [
-          FlSpot(1, 1),
-          FlSpot(3, 2.8),
-          FlSpot(7, 1.2),
-          FlSpot(10, 2.8),
-          FlSpot(12, 2.6),
-          FlSpot(13, 3.9),
-        ],
+      LineChartBarData(
+        spots: spots,
         isCurved: true,
         colors: [
-          CustomAppTheme.themeRedColor,
-        ],
-        barWidth: 0.5,
-        isStrokeCapRound: true,
-        dotData: FlDotData(
-          show: false,
-        ),
-        belowBarData: BarAreaData(show: true, colors: [
-          Color(0x33C82424),
-        ]),
-      ),
-      const LineChartBarData(
-        spots: [
-          FlSpot(1, 1),
-          FlSpot(3, 1.5),
-          FlSpot(5, 1.4),
-          FlSpot(7, 3.4),
-          FlSpot(10, 2),
-          FlSpot(12, 3.2),
-          FlSpot(13, 5.8),
-        ],
-        isCurved: true,
-        colors: [
-          CustomAppTheme.accentColor,
+        CustomAppTheme.accentColor,
         ],
         barWidth: 0.5,
         isStrokeCapRound: true,
@@ -263,64 +266,27 @@ class MonthlyCurveGraphState extends State<MonthlyCurveGraph> {
           Color(0x3341B7C7),
         ]),
       ),
+      LineChartBarData(
+        spots: spotsR,
+        isCurved: true,
+        colors: [
+          CustomAppTheme.themeGreenColor,
+        ],
+        barWidth: 0.5,
+        isStrokeCapRound: true,
+        dotData: FlDotData(
+          show: false,
+        ),
+        belowBarData: BarAreaData(show: true, colors: [
+          CustomAppTheme.themeGreenColor.withOpacity(0.3)
+        ]),
+      ),
     ];
   }
 
-  List<LineChartBarData> linesBarData1() {
-    LineChartBarData lineChartBarData1 = const LineChartBarData(
-      spots: [
-        FlSpot(1, 1),
-        FlSpot(3, 1.5),
-        FlSpot(5, 1.4),
-        FlSpot(7, 3.4),
-        FlSpot(10, 2),
-        FlSpot(12, 3.2),
-        FlSpot(13, 5.8),
-      ],
-      isCurved: true,
-      colors: [
-        Color(0xffd68709),
-      ],
-      barWidth: 2,
-      isStrokeCapRound: true,
-      dotData: FlDotData(
-        show: false,
-      ),
-      belowBarData: BarAreaData(
-        show: false,
-      ),
-    );
-    LineChartBarData lineChartBarData3 = const LineChartBarData(
-      spots: [
-        FlSpot(1, 2.8),
-        FlSpot(3, 1.9),
-        FlSpot(6, 3),
-        FlSpot(10, 1.3),
-        FlSpot(13, 2.5),
-      ],
-      isCurved: true,
-      colors: [
-        Color(0xff991611),
-      ],
-      barWidth: 2,
-      isStrokeCapRound: true,
-      dotData: FlDotData(
-        show: false,
-      ),
-      belowBarData: BarAreaData(
-        show: false,
-      ),
-    );
-    return [
-      lineChartBarData1,
-      lineChartBarData3,
-    ];
-  }
-
-
-  Widget _getBarChart() {
+  Widget _getBarChart(DailyCovidResponse data) {
     return LineChart(
-      sampleData2(),
+      sampleData2(data),
       swapAnimationDuration: Duration(milliseconds: 250),
     );
   }

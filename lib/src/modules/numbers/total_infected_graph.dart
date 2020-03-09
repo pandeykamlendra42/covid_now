@@ -1,3 +1,5 @@
+import 'package:corona_app/src/core/storage/preferences/preference_manager.dart';
+import 'package:corona_app/src/modules/numbers/models/daily_covid_response.dart';
 import 'package:corona_app/src/modules/numbers/models/world_list_response.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +15,8 @@ class TotalInfectedGraph extends StatefulWidget {
 
 class TotalInfectedGraphState extends State<TotalInfectedGraph> {
   bool isShowingMainData;
+  var dataMaxX = 4.0;
+  var dataMaxY = 10.0;
 
   @override
   void initState() {
@@ -66,10 +70,17 @@ class TotalInfectedGraphState extends State<TotalInfectedGraph> {
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.only(right: 16.0, left: 6.0),
-                  child: LineChart(
-                    sampleData1(),
-                    swapAnimationDuration: Duration(milliseconds: 250),
-                  ),
+                  child: FutureBuilder(
+                      future: PreferenceManager().getDailyCovidResponse(),
+                      builder: (_, AsyncSnapshot<DailyCovidResponse> snapshot) {
+                        if (snapshot.hasData) {
+                          return LineChart(
+                            sampleData1(snapshot.data),
+                            swapAnimationDuration: Duration(milliseconds: 250),
+                          );
+                        }
+                        return Container();
+                      }),
                 ),
               ),
               const SizedBox(
@@ -97,7 +108,24 @@ class TotalInfectedGraphState extends State<TotalInfectedGraph> {
     );
   }
 
-  LineChartData sampleData1() {
+  LineChartData sampleData1(DailyCovidResponse data) {
+    List<FlSpot> spots = [];
+    List<FlSpot> spotsR = [];
+    dataMaxX = 0;
+    data.data.forEach((covid) {
+
+      var day = int.parse(covid.date.substring(covid.date.lastIndexOf("/") + 1, covid.date.length));
+      if (covid.confirmed != null && (day % 10) == 0) {
+        dataMaxX += 3.5;
+        dataMaxY = (covid.confirmed / 10000);
+        spots.add(FlSpot(dataMaxX, dataMaxY));
+      }
+      if (covid.recovered != null && (day % 10) == 0) {
+        //dataMaxX += 1;
+        spotsR.add(FlSpot(dataMaxX, (covid.recovered / 10000)));
+      }
+      print("data(x, y) : ($dataMaxX, $dataMaxY), ${spots.length}");
+    });
     return LineChartData(
       lineTouchData: LineTouchData(
         touchTooltipData: LineTouchTooltipData(
@@ -149,8 +177,12 @@ class TotalInfectedGraphState extends State<TotalInfectedGraph> {
               case 3:
                 return '20k';
               case 4:
-                return '50k';
+                return '30k';
               case 5:
+                return '50k';
+              case 6:
+                return '70k';
+              case 7:
                 return '100k';
             }
             return '';
@@ -177,25 +209,17 @@ class TotalInfectedGraphState extends State<TotalInfectedGraph> {
           ),
         ),
       ),
-      minX: 0,
-      maxX: 14,
-      maxY: 5,
+      minX: 1,
+      maxX: dataMaxX,
+      maxY: dataMaxY,
       minY: 0,
-      lineBarsData: linesBarData1(),
+      lineBarsData: linesBarData1(spots, spotsR),
     );
   }
 
-  List<LineChartBarData> linesBarData1() {
-    LineChartBarData lineChartBarData1 = const LineChartBarData(
-      spots: [
-        FlSpot(1, 1),
-        FlSpot(3, 1.5),
-        FlSpot(5, 1.4),
-        FlSpot(7, 3.4),
-        FlSpot(10, 2),
-        FlSpot(12, 3.2),
-        FlSpot(13, 5.8),
-      ],
+  List<LineChartBarData> linesBarData1(List<FlSpot> spots, List<FlSpot> spotsR) {
+    LineChartBarData lineChartBarData1 =  LineChartBarData(
+      spots: spots,
       isCurved: true,
       colors: [
         Color(0xffd68709),
@@ -209,17 +233,11 @@ class TotalInfectedGraphState extends State<TotalInfectedGraph> {
         show: false,
       ),
     );
-    LineChartBarData lineChartBarData3 = const LineChartBarData(
-      spots: [
-        FlSpot(1, 2.8),
-        FlSpot(3, 1.9),
-        FlSpot(6, 3),
-        FlSpot(10, 1.3),
-        FlSpot(13, 2.5),
-      ],
+    LineChartBarData lineChartBarData3 =  LineChartBarData(
+      spots: spotsR,
       isCurved: true,
       colors: [
-        Color(0xff991611),
+        Color(0xffB7F86D),
       ],
       barWidth: 2,
       isStrokeCapRound: true,
@@ -232,8 +250,7 @@ class TotalInfectedGraphState extends State<TotalInfectedGraph> {
     );
     return [
       lineChartBarData1,
-      lineChartBarData3,
+     // lineChartBarData3,
     ];
   }
-
 }

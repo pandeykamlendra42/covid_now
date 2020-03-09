@@ -18,6 +18,7 @@ class CustomAppTheme {
   static const Color primaryColor = const Color(0xFF142342);
   static const Color accentColor = const Color(0xff41B7C7);
   static const Color themeRedColor = const Color(0xFFC82424);
+  static const Color themeGreenColor = const Color(0xffB7F86D);
 
   static const Color googleThemeColor = Color(0xFFDE5246);
   static const Color facebookThemeColor = Color(0xFF4169A7);

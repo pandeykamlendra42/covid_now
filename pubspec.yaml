@@ -30,6 +30,7 @@ dependencies:
   google_maps_flutter: ^0.5.24+1
   flutter_svg: ^0.17.2
   flutter_country_picker: ^0.1.6
+  intl: ^0.16.0
 
 dev_dependencies:
   flutter_test:
