@@ -43,9 +43,11 @@ class _MainScreenState extends State<MainScreen> {
           labelStyle: bmnav.LabelStyle(
               textStyle: TextStyle(
                 color: Colors.white,
+                fontFamily: CustomAppTheme.fontName,
               ),
               onSelectTextStyle: TextStyle(
                 color: CustomAppTheme.accentColor,
+                fontFamily: CustomAppTheme.fontName,
               )),
           elevation: 15,
           index: _currentIndex,

@@ -31,7 +31,8 @@ class CustomAppTheme {
   static const Color deactivatedText = Color(0xFF767676);
   static const Color dismissibleBackground = Color(0xFF364A54);
   static const Color spacer = Color(0xFFF2F2F2);
-  static const String fontName = 'Roboto';
+  static const String fontName = 'Comfortaa';
+  static const String secFontName = 'Futura';
 
   static TextStyle display1 = TextStyle(
       color: darkerTextColor,

@@ -1,5 +1,6 @@
 import 'package:corona_app/src/core/theme/custom_app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class MythsPage extends StatefulWidget {
   static final routeName = "./myths";
@@ -65,6 +66,7 @@ class _MythsPageState extends State<MythsPage> {
         title: Text(
           _FAQListItems[index]["title"],
           style: TextStyle(
+              fontFamily: CustomAppTheme.fontName,
               color: Colors.white70, fontSize: 18, fontWeight: FontWeight.w400),
         ),
         trailing: Icon(
@@ -88,7 +90,7 @@ class _MythsPageState extends State<MythsPage> {
               children: <Widget>[
                 Container(
                   alignment: Alignment.center,
-                  child: Image.asset(_FAQListItems[index]["image"]),
+                  child: SvgPicture.asset(_FAQListItems[index]["image"]),
                 ),
                 Container(
                   padding: EdgeInsets.all(10),
@@ -97,6 +99,7 @@ class _MythsPageState extends State<MythsPage> {
                     text: TextSpan(
                       text: _FAQListItems[index]["desc1"],
                       style: TextStyle(
+                          fontFamily: CustomAppTheme.fontName,
                           color: Colors.white70,
                           fontSize: 16,
                           fontWeight: FontWeight.w300),
@@ -104,11 +107,13 @@ class _MythsPageState extends State<MythsPage> {
                         TextSpan(
                             text: _FAQListItems[index]["richText"],
                             style: TextStyle(
+                                fontFamily: CustomAppTheme.fontName,
                                 fontWeight: FontWeight.w500,
                                 color: CustomAppTheme.themeRedColor)),
                         TextSpan(
                             text: _FAQListItems[index]["desc2"],
                             style: TextStyle(
+                                fontFamily: CustomAppTheme.fontName,
                                 color: Colors.white70,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w300)),
@@ -131,7 +136,7 @@ class _MythsPageState extends State<MythsPage> {
       "richText": "NOT",
       "desc2":
           " prevent a person from catching coronavirus. Regardless of the temperature of water, the temperature of the body is the deciding factorl",
-      "image": "assets/images/hot_bath.png",
+      "image": "assets/images/hot_bath.svg",
     },
     {
       "title": "Made in China",
@@ -139,7 +144,7 @@ class _MythsPageState extends State<MythsPage> {
       "richText": "CANNOT",
       "desc2":
           " be transfered by goods manufactured in China or any other country. Even though the virus can stay on the surface of an object from a few hours to days, it is very unlikely that it will persist when the item is being moved and exposed to different conditions, temperatures.",
-      "image": "assets/images/china_stiker.png",
+      "image": "assets/images/china_stiker.svg",
     },
     {
       "title": "Mosquitoes",
@@ -147,7 +152,7 @@ class _MythsPageState extends State<MythsPage> {
       "richText": "CANNOT",
       "desc2":
           " be transmitted through mosquito bites. Till date there has been no evidence which suggests the same",
-      "image": "assets/images/mosquito.png",
+      "image": "assets/images/mosquito.svg",
     },
     {
       "title": "Hand Dryer",
@@ -155,7 +160,7 @@ class _MythsPageState extends State<MythsPage> {
       "richText": "NOT",
       "desc2":
           " effective in killing 2019-nCov. You should frequently wash your hands with alcohol based hand rub or soap.",
-      "image": "assets/images/hand_dryer.png",
+      "image": "assets/images/hand_dryer.svg",
     },
   ];
 }

@@ -1,4 +1,6 @@
 import 'package:corona_app/src/core/storage/preferences/preference_manager.dart';
+import 'package:corona_app/src/core/theme/custom_app_theme.dart';
+import 'package:corona_app/src/core/widgets/disclaimer_page.dart';
 import 'package:corona_app/src/modules/numbers/models/daily_covid_response.dart';
 import 'package:corona_app/src/modules/numbers/models/world_list_response.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -50,6 +52,7 @@ class TotalInfectedGraphState extends State<TotalInfectedGraph> {
                   "Total Infected",
                   style: TextStyle(
                       color: Colors.white,
+                      fontFamily: CustomAppTheme.fontName,
                       fontSize: 16,
                       fontWeight: FontWeight.w300),
                 ),
@@ -59,6 +62,7 @@ class TotalInfectedGraphState extends State<TotalInfectedGraph> {
                 child: Text(
                   "${widget.listResponse.confirmed}",
                   style: TextStyle(
+                      fontFamily: CustomAppTheme.fontName,
                       color: const Color(0xff41B7C7),
                       fontSize: 40,
                       fontWeight: FontWeight.w700),
@@ -97,9 +101,7 @@ class TotalInfectedGraphState extends State<TotalInfectedGraph> {
                 color: Colors.white.withOpacity(isShowingMainData ? 1.0 : 0.5),
               ),
               onPressed: () {
-                setState(() {
-                  isShowingMainData = !isShowingMainData;
-                });
+                Navigator.pushNamed(context, DisclaimerPage.routeName);
               },
             ),
           )
@@ -113,8 +115,8 @@ class TotalInfectedGraphState extends State<TotalInfectedGraph> {
     List<FlSpot> spotsR = [];
     dataMaxX = 0;
     data.data.forEach((covid) {
-
-      var day = int.parse(covid.date.substring(covid.date.lastIndexOf("/") + 1, covid.date.length));
+      var day = int.parse(covid.date
+          .substring(covid.date.lastIndexOf("/") + 1, covid.date.length));
       if (covid.confirmed != null && (day % 10) == 0) {
         dataMaxX += 3.5;
         dataMaxY = (covid.confirmed / 10000);
@@ -146,6 +148,7 @@ class TotalInfectedGraphState extends State<TotalInfectedGraph> {
           textStyle: TextStyle(
             color: Colors.white70,
             fontWeight: FontWeight.w300,
+            fontFamily: CustomAppTheme.fontName,
             fontSize: 14,
           ),
           margin: 10,
@@ -167,6 +170,7 @@ class TotalInfectedGraphState extends State<TotalInfectedGraph> {
             color: Colors.white70,
             fontWeight: FontWeight.w300,
             fontSize: 14,
+            fontFamily: CustomAppTheme.fontName,
           ),
           getTitles: (value) {
             switch (value.toInt()) {
@@ -217,8 +221,9 @@ class TotalInfectedGraphState extends State<TotalInfectedGraph> {
     );
   }
 
-  List<LineChartBarData> linesBarData1(List<FlSpot> spots, List<FlSpot> spotsR) {
-    LineChartBarData lineChartBarData1 =  LineChartBarData(
+  List<LineChartBarData> linesBarData1(
+      List<FlSpot> spots, List<FlSpot> spotsR) {
+    LineChartBarData lineChartBarData1 = LineChartBarData(
       spots: spots,
       isCurved: true,
       colors: [
@@ -233,7 +238,7 @@ class TotalInfectedGraphState extends State<TotalInfectedGraph> {
         show: false,
       ),
     );
-    LineChartBarData lineChartBarData3 =  LineChartBarData(
+    LineChartBarData lineChartBarData3 = LineChartBarData(
       spots: spotsR,
       isCurved: true,
       colors: [
@@ -250,7 +255,7 @@ class TotalInfectedGraphState extends State<TotalInfectedGraph> {
     );
     return [
       lineChartBarData1,
-     // lineChartBarData3,
+      // lineChartBarData3,
     ];
   }
 }

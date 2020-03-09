@@ -1,3 +1,4 @@
+import 'package:corona_app/src/core/theme/custom_app_theme.dart';
 import 'package:corona_app/src/modules/info/screens/basic_protetive_measure.dart';
 import 'package:corona_app/src/modules/info/screens/faq_page.dart';
 import 'package:corona_app/src/modules/info/screens/myths_page.dart';
@@ -73,6 +74,7 @@ class InfoPage extends StatelessWidget {
             child: Text(
               menu,
               style: TextStyle(
+                  fontFamily: CustomAppTheme.fontName,
                   color: Colors.white70,
                   fontSize: 18,
                   fontWeight: FontWeight.w400),

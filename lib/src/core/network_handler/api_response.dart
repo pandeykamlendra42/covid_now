@@ -12,6 +12,7 @@ class ApiResponse<T> {
   ApiResponse.completed(this.data) : status = Status.COMPLETED;
 
   ApiResponse.error(this.message) : status = Status.ERROR;
+  ApiResponse.connectionError(this.message) : status = Status.CONNECTION_ERROR;
 
   @override
   String toString() {
@@ -19,4 +20,4 @@ class ApiResponse<T> {
   }
 }
 
-enum Status { LOADING, COMPLETED, ERROR }
+enum Status { LOADING, COMPLETED, ERROR, CONNECTION_ERROR }

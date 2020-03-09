@@ -65,6 +65,7 @@ class _NumbersPageState extends State<NumbersPage>
                 child: Text(
                   "Overview",
                   style: TextStyle(
+                      fontFamily: CustomAppTheme.fontName,
                       color: Colors.white,
                       fontSize: 36,
                       fontWeight: FontWeight.w500),
@@ -128,6 +129,7 @@ class _NumbersPageState extends State<NumbersPage>
                               child: Text(
                                 "Total \nDeaths",
                                 style: TextStyle(
+                                    fontFamily: CustomAppTheme.fontName,
                                     color: Colors.white,
                                     fontSize: 18,
                                     fontWeight: FontWeight.w300),
@@ -142,6 +144,7 @@ class _NumbersPageState extends State<NumbersPage>
                                 child: Text(
                                   "${snapshot.data.deaths}",
                                   style: TextStyle(
+                                      fontFamily: CustomAppTheme.fontName,
                                       color: Color(0xFFC82424),
                                       fontSize: 40,
                                       fontWeight: FontWeight.w700),
@@ -155,6 +158,7 @@ class _NumbersPageState extends State<NumbersPage>
                                 text: TextSpan(
                                     text: "${snapshot.data.percentDeath}%",
                                     style: TextStyle(
+                                        fontFamily: CustomAppTheme.fontName,
                                         color: Color(0xFFC82424),
                                         fontWeight: FontWeight.w600,
                                         fontSize: 20),
@@ -162,6 +166,7 @@ class _NumbersPageState extends State<NumbersPage>
                                       TextSpan(
                                         text: " of total",
                                         style: TextStyle(
+                                            fontFamily: CustomAppTheme.fontName,
                                             color: Colors.white70,
                                             fontWeight: FontWeight.w300,
                                             fontSize: 16),
@@ -204,6 +209,7 @@ class _NumbersPageState extends State<NumbersPage>
                               child: Text(
                                 "Total \nRecovered",
                                 style: TextStyle(
+                                    fontFamily: CustomAppTheme.fontName,
                                     color: Colors.white,
                                     fontSize: 18,
                                     fontWeight: FontWeight.w300),
@@ -218,6 +224,7 @@ class _NumbersPageState extends State<NumbersPage>
                                 child: Text(
                                   "${snapshot.data.recovered}",
                                   style: TextStyle(
+                                      fontFamily: CustomAppTheme.fontName,
                                       color: Color(0xffB7F86D),
                                       fontSize: 40,
                                       fontWeight: FontWeight.w700),
@@ -232,6 +239,7 @@ class _NumbersPageState extends State<NumbersPage>
                                 text: TextSpan(
                                     text: "${snapshot.data.percentRecovered}%",
                                     style: TextStyle(
+                                        fontFamily: CustomAppTheme.fontName,
                                         color: Color(0xffB7F86D),
                                         fontWeight: FontWeight.w600,
                                         fontSize: 20),
@@ -239,6 +247,7 @@ class _NumbersPageState extends State<NumbersPage>
                                       TextSpan(
                                         text: " of total",
                                         style: TextStyle(
+                                            fontFamily: CustomAppTheme.fontName,
                                             color: Colors.white70,
                                             fontWeight: FontWeight.w300,
                                             fontSize: 16),

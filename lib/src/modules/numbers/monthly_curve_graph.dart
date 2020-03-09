@@ -1,5 +1,6 @@
 import 'package:corona_app/src/core/storage/preferences/preference_manager.dart';
 import 'package:corona_app/src/core/theme/custom_app_theme.dart';
+import 'package:corona_app/src/core/widgets/disclaimer_page.dart';
 import 'package:corona_app/src/modules/numbers/models/world_list_response.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -53,6 +54,7 @@ class MonthlyCurveGraphState extends State<MonthlyCurveGraph> {
                 child: Text(
                   "Febraury 2020",
                   style: TextStyle(
+                      fontFamily: CustomAppTheme.fontName,
                       color: Colors.white,
                       fontSize: 18,
                       fontWeight: FontWeight.w400),
@@ -78,6 +80,7 @@ class MonthlyCurveGraphState extends State<MonthlyCurveGraph> {
                       child: Text(
                         "Infected",
                         style: TextStyle(
+                            fontFamily: CustomAppTheme.fontName,
                             color: Colors.white,
                             fontSize: 12,
                             fontWeight: FontWeight.w300),
@@ -97,6 +100,7 @@ class MonthlyCurveGraphState extends State<MonthlyCurveGraph> {
                       child: Text(
                         "Recovered",
                         style: TextStyle(
+                            fontFamily: CustomAppTheme.fontName,
                             color: Colors.white,
                             fontSize: 12,
                             fontWeight: FontWeight.w300),
@@ -135,9 +139,7 @@ class MonthlyCurveGraphState extends State<MonthlyCurveGraph> {
                 color: Colors.white.withOpacity(isShowingMainData ? 1.0 : 0.5),
               ),
               onPressed: () {
-                setState(() {
-                  isShowingMainData = !isShowingMainData;
-                });
+                Navigator.pushNamed(context, DisclaimerPage.routeName);
               },
             ),
           )
@@ -178,6 +180,7 @@ class MonthlyCurveGraphState extends State<MonthlyCurveGraph> {
           showTitles: true,
           reservedSize: 22,
           textStyle: TextStyle(
+            fontFamily: CustomAppTheme.fontName,
             color: Colors.white70,
             fontWeight: FontWeight.w300,
             fontSize: 14,
@@ -198,6 +201,7 @@ class MonthlyCurveGraphState extends State<MonthlyCurveGraph> {
         leftTitles: SideTitles(
           showTitles: true,
           textStyle: TextStyle(
+            fontFamily: CustomAppTheme.fontName,
             color: Colors.white70,
             fontWeight: FontWeight.w300,
             fontSize: 14,

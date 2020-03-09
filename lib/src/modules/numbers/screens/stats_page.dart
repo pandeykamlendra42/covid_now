@@ -63,6 +63,7 @@ class _StatsPageState extends State<StatsPage> {
                 child: Text(
                   "Countries",
                   style: TextStyle(
+                      fontFamily: CustomAppTheme.fontName,
                       color: Colors.white,
                       fontSize: 36,
                       fontWeight: FontWeight.w500),
@@ -85,6 +86,7 @@ class _StatsPageState extends State<StatsPage> {
                         child: Text(
                           "World",
                           style: TextStyle(
+                              fontFamily: CustomAppTheme.fontName,
                               color: Colors.white,
                               fontSize: 16,
                               fontWeight: FontWeight.w500),

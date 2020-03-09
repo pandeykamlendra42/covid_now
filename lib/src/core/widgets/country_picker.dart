@@ -29,7 +29,7 @@ class CountryPickerWidget extends StatelessWidget {
         valueListenable: _selected,
         builder: (_, country, child) {
           return CountryPicker(
-            nameTextStyle: TextStyle(color: Colors.white),
+            nameTextStyle: TextStyle(color: Colors.white, fontFamily: CustomAppTheme.fontName,),
             dense: false,
             showFlag: true,
             showDialingCode: false,

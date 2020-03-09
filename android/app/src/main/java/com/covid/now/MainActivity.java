@@ -1,4 +1,4 @@
-package org.corona.corona_app;
+package com.covid.now;
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity;

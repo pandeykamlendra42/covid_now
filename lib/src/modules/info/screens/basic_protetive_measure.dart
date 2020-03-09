@@ -1,3 +1,4 @@
+import 'package:corona_app/src/core/theme/custom_app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -66,6 +67,7 @@ class _BasicProtectiveMeasureState extends State<BasicProtectiveMeasure> {
         title: Text(
           _FAQListItems[index]["title"],
           style: TextStyle(
+              fontFamily: CustomAppTheme.fontName,
               color: Colors.white70, fontSize: 18, fontWeight: FontWeight.w400),
         ),
         trailing: Icon(
@@ -96,6 +98,7 @@ class _BasicProtectiveMeasureState extends State<BasicProtectiveMeasure> {
                   child: Text(
                     _FAQListItems[index]["desc"],
                     style: TextStyle(
+                        fontFamily: CustomAppTheme.fontName,
                         color: Colors.white70,
                         fontSize: 16,
                         fontWeight: FontWeight.w300),

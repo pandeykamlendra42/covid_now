@@ -1,3 +1,5 @@
+import 'package:corona_app/src/core/theme/custom_app_theme.dart';
+import 'package:corona_app/src/core/widgets/disclaimer_page.dart';
 import 'package:flutter/material.dart';
 
 class FAQPage extends StatefulWidget {
@@ -20,8 +22,13 @@ class _FAQPageState extends State<FAQPage> {
         iconTheme: IconThemeData(color: Colors.white),
         actions: <Widget>[
           IconButton(
-            onPressed: (){},
-            icon: Icon(Icons.info_outline, color: Colors.white,),
+            onPressed: () {
+              Navigator.pushNamed(context, DisclaimerPage.routeName);
+            },
+            icon: Icon(
+              Icons.info_outline,
+              color: Colors.white,
+            ),
           )
         ],
       ),
@@ -75,6 +82,7 @@ class _FAQPageState extends State<FAQPage> {
         title: Text(
           _FAQListItems[index]["q"],
           style: TextStyle(
+              fontFamily: CustomAppTheme.fontName,
               color: Colors.white70, fontSize: 18, fontWeight: FontWeight.w400),
         ),
         trailing: Icon(
@@ -97,6 +105,7 @@ class _FAQPageState extends State<FAQPage> {
             child: Text(
               _FAQListItems[index]["a"],
               style: TextStyle(
+                  fontFamily: CustomAppTheme.fontName,
                   color: Colors.white70,
                   fontSize: 16,
                   fontWeight: FontWeight.w300),

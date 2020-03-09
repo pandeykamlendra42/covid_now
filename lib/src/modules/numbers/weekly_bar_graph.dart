@@ -1,5 +1,6 @@
 import 'package:corona_app/src/core/storage/preferences/preference_manager.dart';
 import 'package:corona_app/src/core/theme/custom_app_theme.dart';
+import 'package:corona_app/src/core/widgets/disclaimer_page.dart';
 import 'package:corona_app/src/modules/numbers/models/world_list_response.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -60,6 +61,7 @@ class WeeklyBarGraphState extends State<WeeklyBarGraph> {
                 child: Text(
                   "Last 7 days",
                   style: TextStyle(
+                      fontFamily: CustomAppTheme.fontName,
                       color: Colors.white,
                       fontSize: 18,
                       fontWeight: FontWeight.w400),
@@ -85,6 +87,7 @@ class WeeklyBarGraphState extends State<WeeklyBarGraph> {
                       child: Text(
                         "Infected",
                         style: TextStyle(
+                            fontFamily: CustomAppTheme.fontName,
                             color: Colors.white,
                             fontSize: 12,
                             fontWeight: FontWeight.w300),
@@ -104,6 +107,7 @@ class WeeklyBarGraphState extends State<WeeklyBarGraph> {
                       child: Text(
                         "Recovered",
                         style: TextStyle(
+                            fontFamily: CustomAppTheme.fontName,
                             color: Colors.white,
                             fontSize: 12,
                             fontWeight: FontWeight.w300),
@@ -142,9 +146,7 @@ class WeeklyBarGraphState extends State<WeeklyBarGraph> {
                 color: Colors.white.withOpacity(isShowingMainData ? 1.0 : 0.5),
               ),
               onPressed: () {
-                setState(() {
-                  isShowingMainData = !isShowingMainData;
-                });
+                Navigator.pushNamed(context, DisclaimerPage.routeName);
               },
             ),
           )
@@ -169,17 +171,7 @@ class WeeklyBarGraphState extends State<WeeklyBarGraph> {
   }
 
   Widget _getBarChart(DailyCovidResponse data) {
-    final barGroup1 = makeGroupData(0, 5, 12);
-    final barGroup2 = makeGroupData(1, 16, 12);
-    final barGroup3 = makeGroupData(2, 18, 5);
-    final barGroup4 = makeGroupData(3, 20, 16);
-    final barGroup5 = makeGroupData(4, 17, 6);
-    final barGroup6 = makeGroupData(5, 19, 1.5);
-    final barGroup7 = makeGroupData(6, 10, 1.5);
-
     List<BarChartGroupData> items = [];
-    List<FlSpot> spots = [];
-    List<FlSpot> spotsR = [];
     dataMaxX = 0;
     var tempI = 0, tempR = 0, count = 0;
     weekDays.clear();
@@ -256,6 +248,7 @@ class WeeklyBarGraphState extends State<WeeklyBarGraph> {
           bottomTitles: SideTitles(
             showTitles: true,
             textStyle: TextStyle(
+                fontFamily: CustomAppTheme.fontName,
                 color: Colors.white70,
                 fontWeight: FontWeight.w300,
                 fontSize: 14),
@@ -270,6 +263,7 @@ class WeeklyBarGraphState extends State<WeeklyBarGraph> {
           leftTitles: SideTitles(
             showTitles: true,
             textStyle: TextStyle(
+                fontFamily: CustomAppTheme.fontName,
                 color: Colors.white70,
                 fontWeight: FontWeight.w300,
                 fontSize: 14),
@@ -279,9 +273,9 @@ class WeeklyBarGraphState extends State<WeeklyBarGraph> {
               if (value == 0) {
                 return '1K';
               } else if (value == 10) {
-                return '20K';
+                return '5K';
               } else if (value == 19) {
-                return '100K';
+                return '10K';
               } else {
                 return '';
               }
