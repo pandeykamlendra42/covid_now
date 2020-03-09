@@ -61,7 +61,7 @@ class _MainScreenState extends State<MainScreen> {
             bmnav.BottomNavItem(Icons.offline_bolt, label: 'Overview'),
             bmnav.BottomNavItem(Icons.graphic_eq, label: 'Stats'),
             bmnav.BottomNavItem(Icons.map, label: 'Map'),
-            bmnav.BottomNavItem(Icons.more_horiz, label: 'More')
+            bmnav.BottomNavItem(Icons.more, label: 'More')
           ],
         ),
         body: _children[_currentIndex],

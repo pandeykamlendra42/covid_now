@@ -60,206 +60,210 @@ class _NumbersPageState extends State<NumbersPage>
           return Column(
             children: <Widget>[
               Container(
-                margin: EdgeInsets.only(top: 5, bottom: 15),
+                margin: EdgeInsets.only(top: 5, bottom: 25),
                 alignment: Alignment.centerLeft,
                 child: Text(
                   "Overview",
                   style: TextStyle(
                       fontFamily: CustomAppTheme.fontName,
                       color: Colors.white,
-                      fontSize: 36,
+                      fontSize: 34,
                       fontWeight: FontWeight.w500),
                 ),
               ),
-              Container(
-                alignment: Alignment.center,
-                margin: EdgeInsets.only(top: 10, bottom: 15),
-                child: CountryPickerWidget(callback: (country){
+//              Container(
+//                alignment: Alignment.center,
+//                margin: EdgeInsets.only(top: 10, bottom: 15),
+//                child: CountryPickerWidget(callback: (country){
+//
+//                },),
+//              ),
+              Expanded(
+                flex: 4,
+                child: Card(
+                  elevation: 1,
+                  color: Colors.transparent,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(15))),
+                  child: Container(
 
-                },),
-              ),
-              Card(
-                elevation: 1,
-                color: Colors.transparent,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(15))),
-                child: Container(
-                  height: _height * 3 / 8,
-                  width: _width * 0.87,
-                  child: TotalInfectedGraph(
-                    listResponse: snapshot.data,
+                    width: _width * 0.87,
+                    child: TotalInfectedGraph(
+                      listResponse: snapshot.data,
+                    ),
                   ),
                 ),
               ),
-              Container(
-                margin: EdgeInsets.only(top: 18),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Card(
-                      elevation: 1,
-                      color: Colors.transparent,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(15))),
-                      child: Container(
-                        height: _height * 1 / 3.6,
-                        width: _width * 0.4,
-                        decoration: BoxDecoration(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(15)),
-                          gradient: LinearGradient(
-                            colors: const [
-                              // Color(0xff2c274c),
-                              // Color(0xff46426c),
-                              Color(0xff2D4361),
-                              Color(0xff2D4361),
-                            ],
-                            begin: Alignment.bottomCenter,
-                            end: Alignment.topCenter,
-                          ),
-                        ),
-                        padding: EdgeInsets.only(left: 16, right: 16),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Container(
-                              margin: EdgeInsets.only(bottom: 35),
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                "Total \nDeaths",
-                                style: TextStyle(
-                                    fontFamily: CustomAppTheme.fontName,
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w300),
-                              ),
+              Expanded(
+                flex: 3,
+                child: Container(
+                  margin: EdgeInsets.only(top: 18),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Card(
+                        elevation: 1,
+                        color: Colors.transparent,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(15))),
+                        child: Container(
+                          width: _width * 0.4,
+                          decoration: BoxDecoration(
+                            borderRadius:
+                            const BorderRadius.all(Radius.circular(15)),
+                            gradient: LinearGradient(
+                              colors: const [
+                                // Color(0xff2c274c),
+                                // Color(0xff46426c),
+                                Color(0xff2D4361),
+                                Color(0xff2D4361),
+                              ],
+                              begin: Alignment.bottomCenter,
+                              end: Alignment.topCenter,
                             ),
-                            Container(
-                              alignment: Alignment.centerRight,
-                              height: 50,
-                              padding: EdgeInsets.only(left: 20),
-                              child: FittedBox(
-                                fit: BoxFit.fitWidth,
+                          ),
+                          padding: EdgeInsets.only(left: 16, right: 16),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Container(
+                                margin: EdgeInsets.only(bottom: 35),
+                                alignment: Alignment.centerLeft,
                                 child: Text(
-                                  "${snapshot.data.deaths}",
+                                  "Total \nDeaths",
                                   style: TextStyle(
                                       fontFamily: CustomAppTheme.fontName,
-                                      color: Color(0xFFC82424),
-                                      fontSize: 40,
-                                      fontWeight: FontWeight.w700),
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w300),
                                 ),
                               ),
-                            ),
-                            Container(
-                              alignment: Alignment.centerRight,
-                              margin: EdgeInsets.only(top: 5, bottom: 5),
-                              child: RichText(
-                                text: TextSpan(
-                                    text: "${snapshot.data.percentDeath}%",
+                              Container(
+                                alignment: Alignment.centerRight,
+                                height: 50,
+                                padding: EdgeInsets.only(left: 20),
+                                child: FittedBox(
+                                  fit: BoxFit.fitWidth,
+                                  child: Text(
+                                    "${snapshot.data.deaths}",
                                     style: TextStyle(
                                         fontFamily: CustomAppTheme.fontName,
                                         color: Color(0xFFC82424),
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 20),
-                                    children: [
-                                      TextSpan(
-                                        text: " of total",
-                                        style: TextStyle(
-                                            fontFamily: CustomAppTheme.fontName,
-                                            color: Colors.white70,
-                                            fontWeight: FontWeight.w300,
-                                            fontSize: 16),
-                                      )
-                                    ]),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Card(
-                      margin: EdgeInsets.only(left: 20),
-                      elevation: 1,
-                      color: Colors.transparent,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(15))),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(15)),
-                          gradient: LinearGradient(
-                            colors: const [
-                              Color(0xff2D4361),
-                              Color(0xff2D4361),
-                            ],
-                            begin: Alignment.bottomCenter,
-                            end: Alignment.topCenter,
-                          ),
-                        ),
-                        height: _height * 1 / 3.6,
-                        width: _width * 0.4,
-                        padding: EdgeInsets.only(left: 16, right: 16),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Container(
-                              margin: EdgeInsets.only(bottom: 35),
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                "Total \nRecovered",
-                                style: TextStyle(
-                                    fontFamily: CustomAppTheme.fontName,
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w300),
-                              ),
-                            ),
-                            Container(
-                              alignment: Alignment.centerRight,
-                              height: 50,
-                              padding: EdgeInsets.only(left: 20),
-                              child: FittedBox(
-                                fit: BoxFit.fitWidth,
-                                child: Text(
-                                  "${snapshot.data.recovered}",
-                                  style: TextStyle(
-                                      fontFamily: CustomAppTheme.fontName,
-                                      color: Color(0xffB7F86D),
-                                      fontSize: 40,
-                                      fontWeight: FontWeight.w700),
-                                  maxLines: 1,
+                                        fontSize: 40,
+                                        fontWeight: FontWeight.w700),
+                                  ),
                                 ),
                               ),
+                              Container(
+                                alignment: Alignment.centerRight,
+                                margin: EdgeInsets.only(top: 5, bottom: 5),
+                                child: RichText(
+                                  text: TextSpan(
+                                      text: "${snapshot.data.percentDeath}%",
+                                      style: TextStyle(
+                                          fontFamily: CustomAppTheme.fontName,
+                                          color: Color(0xFFC82424),
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 20),
+                                      children: [
+                                        TextSpan(
+                                          text: " of total",
+                                          style: TextStyle(
+                                              fontFamily: CustomAppTheme.fontName,
+                                              color: Colors.white70,
+                                              fontWeight: FontWeight.w300,
+                                              fontSize: 16),
+                                        )
+                                      ]),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Card(
+                        margin: EdgeInsets.only(left: 20),
+                        elevation: 1,
+                        color: Colors.transparent,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(15))),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius:
+                            const BorderRadius.all(Radius.circular(15)),
+                            gradient: LinearGradient(
+                              colors: const [
+                                Color(0xff2D4361),
+                                Color(0xff2D4361),
+                              ],
+                              begin: Alignment.bottomCenter,
+                              end: Alignment.topCenter,
                             ),
-                            Container(
-                              alignment: Alignment.centerRight,
-                              margin: EdgeInsets.only(top: 5, bottom: 5),
-                              child: RichText(
-                                text: TextSpan(
-                                    text: "${snapshot.data.percentRecovered}%",
+                          ),
+                          width: _width * 0.4,
+                          padding: EdgeInsets.only(left: 16, right: 16),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Container(
+                                margin: EdgeInsets.only(bottom: 35),
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "Total \nRecovered",
+                                  style: TextStyle(
+                                      fontFamily: CustomAppTheme.fontName,
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w300),
+                                ),
+                              ),
+                              Container(
+                                alignment: Alignment.centerRight,
+                                height: 50,
+                                padding: EdgeInsets.only(left: 20),
+                                child: FittedBox(
+                                  fit: BoxFit.fitWidth,
+                                  child: Text(
+                                    "${snapshot.data.recovered}",
                                     style: TextStyle(
                                         fontFamily: CustomAppTheme.fontName,
                                         color: Color(0xffB7F86D),
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 20),
-                                    children: [
-                                      TextSpan(
-                                        text: " of total",
-                                        style: TextStyle(
-                                            fontFamily: CustomAppTheme.fontName,
-                                            color: Colors.white70,
-                                            fontWeight: FontWeight.w300,
-                                            fontSize: 16),
-                                      )
-                                    ]),
+                                        fontSize: 40,
+                                        fontWeight: FontWeight.w700),
+                                    maxLines: 1,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ],
+                              Container(
+                                alignment: Alignment.centerRight,
+                                margin: EdgeInsets.only(top: 5, bottom: 5),
+                                child: RichText(
+                                  text: TextSpan(
+                                      text: "${snapshot.data.percentRecovered}%",
+                                      style: TextStyle(
+                                          fontFamily: CustomAppTheme.fontName,
+                                          color: Color(0xffB7F86D),
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 20),
+                                      children: [
+                                        TextSpan(
+                                          text: " of total",
+                                          style: TextStyle(
+                                              fontFamily: CustomAppTheme.fontName,
+                                              color: Colors.white70,
+                                              fontWeight: FontWeight.w300,
+                                              fontSize: 16),
+                                        )
+                                      ]),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    )
-                  ],
+                      )
+                    ],
+                  ),
                 ),
               )
             ],

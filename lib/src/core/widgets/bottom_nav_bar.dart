@@ -236,7 +236,10 @@ class BMNavItem extends md.StatelessWidget {
           child: md.Column(
               mainAxisSize: md.MainAxisSize.min,
               children: <md.Widget>[
-                md.Icon(icon, size: iconSize, color: color),
+                md.Padding(
+                  padding: md.EdgeInsets.only(bottom: 5),
+                  child: md.Icon(icon, size: iconSize, color: color),
+                ),
                 label != null
                     ? md.Text(label, style: textStyle)
                     : md.Container()

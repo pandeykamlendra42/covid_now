@@ -8,7 +8,7 @@
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="Covid Now"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@drawable/app_icon">
         <meta-data android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyA7mOyo5rgqI8-vWa6IKkgOvlIpt3Mn6Tg"/>
         <activity

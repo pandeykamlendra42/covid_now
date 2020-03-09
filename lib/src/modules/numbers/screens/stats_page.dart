@@ -69,61 +69,33 @@ class _StatsPageState extends State<StatsPage> {
                       fontWeight: FontWeight.w500),
                 ),
               ),
-              Container(
-                alignment: Alignment.center,
-                margin: EdgeInsets.only(top: 10, bottom: 15),
-                child: Container(
-                  padding: EdgeInsets.only(left: 15, right: 15),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      color: CustomAppTheme.primaryColor,
-                      border: Border.all(color: Colors.grey, width: 2)),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.all(5),
-                        child: Text(
-                          "World",
-                          style: TextStyle(
-                              fontFamily: CustomAppTheme.fontName,
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500),
-                        ),
-                      ),
-                      Icon(
-                        Icons.keyboard_arrow_down,
-                        color: Colors.white,
-                      )
-                    ],
+              Expanded(
+                flex: 1,
+                child: Card(
+                  elevation: 1,
+                  color: Colors.transparent,
+                  margin: EdgeInsets.only(left: 10, right: 10),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(15))),
+                  child: Container(
+                    child: MonthlyCurveGraph(
+                      listResponse: snapshot.data,
+                    ),
                   ),
                 ),
               ),
-              Card(
-                elevation: 1,
-                color: Colors.transparent,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(15))),
-                child: Container(
-                  height: _height * 26 / 80,
-                  width: _width * 0.87,
-                  child: MonthlyCurveGraph(
-                    listResponse: snapshot.data,
-                  ),
-                ),
-              ),
-              Card(
-                elevation: 1,
-                color: Colors.transparent,
-                margin: EdgeInsets.only(top: 15),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(15))),
-                child: Container(
-                  height: _height * 26 / 80,
-                  width: _width * 0.87,
-                  child: WeeklyBarGraph(
-                    listResponse: snapshot.data,
+              Expanded(
+                flex: 1,
+                child: Card(
+                  elevation: 1,
+                  color: Colors.transparent,
+                  margin: EdgeInsets.only(top: 15, left: 10, right: 10),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(15))),
+                  child: Container(
+                    child: WeeklyBarGraph(
+                      listResponse: snapshot.data,
+                    ),
                   ),
                 ),
               ),
