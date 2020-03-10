@@ -37,10 +37,14 @@ class _StatsPageState extends State<StatsPage> {
     var _width = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Scaffold(
-        body: Container(
-          padding: EdgeInsets.all(16),
-          color: CustomAppTheme.primaryColor,
-          child: _buildInfoWidget(),
+        body: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child: Container(
+            padding: EdgeInsets.all(16),
+            height: _height,
+            color: CustomAppTheme.primaryColor,
+            child: _buildInfoWidget(),
+          ),
         ),
       ),
     );
@@ -78,6 +82,7 @@ class _StatsPageState extends State<StatsPage> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(15))),
                   child: Container(
+
                     child: MonthlyCurveGraph(
                       listResponse: snapshot.data,
                     ),

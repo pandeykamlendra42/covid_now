@@ -7,6 +7,7 @@ import 'package:corona_app/src/modules/info/screens/myths_page.dart';
 import 'package:corona_app/src/modules/main/screens/main_screen.dart';
 import 'package:corona_app/src/modules/numbers/screens/numbers_page.dart';
 import 'package:corona_app/src/modules/splash/screens/splash_screen.dart';
+import 'package:device_preview/device_preview.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

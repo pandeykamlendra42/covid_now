@@ -20,7 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
     if (_dataBloc == null) {
       _dataBloc = NumbersDataBloc();
       _dataBloc.stream.listen((response) {
-        if (response.status == Status.COMPLETED) {
+        if (response.status == Status.COMPLETED || response.status == Status.ERROR) {
           Navigator.pushReplacementNamed(context, MainScreen.routeName);
         } else if (response.status == Status.CONNECTION_ERROR) {
           Navigator.pushNamed(context, ConnectionScreen.routeName).then((v) {

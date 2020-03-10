@@ -5,6 +5,7 @@ import 'package:corona_app/src/modules/numbers/models/daily_covid_response.dart'
 import 'package:corona_app/src/modules/numbers/models/world_list_response.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class TotalInfectedGraph extends StatefulWidget {
   final WorldListResponse listResponse;
@@ -28,6 +29,7 @@ class TotalInfectedGraphState extends State<TotalInfectedGraph> {
 
   @override
   Widget build(BuildContext context) {
+    final numberFormat = new NumberFormat("#,###,###", "en_US");
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -48,6 +50,7 @@ class TotalInfectedGraphState extends State<TotalInfectedGraph> {
             children: <Widget>[
               Container(
                 alignment: Alignment.centerLeft,
+                padding: EdgeInsets.only(bottom: 5),
                 child: Text(
                   "Total Infected",
                   style: TextStyle(
@@ -60,7 +63,7 @@ class TotalInfectedGraphState extends State<TotalInfectedGraph> {
               Container(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  "${widget.listResponse.confirmed}",
+                  "${numberFormat.format(widget.listResponse.confirmed)}",
                   style: TextStyle(
                       fontFamily: CustomAppTheme.fontName,
                       color: const Color(0xff41B7C7),

@@ -34,7 +34,7 @@ class InfoPage extends StatelessWidget {
                   getMenuItem(context, "Frequently Asked Questions", "faq"),
                   getMenuItem(context, "Basic Protective Measures", "bpm"),
                   getMenuItem(context, "Myths", "myths"),
-                  getMenuItem(context, "Notify Me", "notify"),
+                 // getMenuItem(context, "Notify Me", "notify"),
                 ],
               ),
             )
