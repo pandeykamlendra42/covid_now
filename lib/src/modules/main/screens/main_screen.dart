@@ -1,5 +1,6 @@
 import 'package:corona_app/src/core/theme/custom_app_theme.dart';
 import 'package:corona_app/src/core/widgets/bottom_nav_bar.dart' as bmnav;
+import 'package:corona_app/src/core/widgets/pie_chart_widget.dart';
 import 'package:corona_app/src/modules/info/screens/info_page.dart';
 import 'package:corona_app/src/modules/numbers/screens/map_page.dart';
 import 'package:corona_app/src/modules/numbers/screens/numbers_page.dart';

@@ -14,6 +14,7 @@ class WorldListResponse {
 
   factory WorldListResponse.fromJson(Map<String, dynamic> json) {
     var tempList = json["data"] as List;
+    print("data ${tempList.length}");
     int tConfirmed = 0, tDeaths = 0, tRecovered = 0;
     List<CovidLocationModel> listItems = [];
     tempList.forEach((json) {

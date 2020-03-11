@@ -4,7 +4,12 @@ class DailyCovidResponse {
   int confirmed, deaths, recovered, percentDeath, percentRecovered;
   List<CovidDailyModel> data;
 
-  DailyCovidResponse({this.data});
+  DailyCovidResponse({this.data,
+    this.confirmed,
+    this.deaths,
+    this.recovered,
+    this.percentDeath,
+    this.percentRecovered});
 
   factory DailyCovidResponse.fromJson(Map<String, dynamic> json) {
     var tempList = json["data"] as List;
@@ -13,9 +18,13 @@ class DailyCovidResponse {
       CovidDailyModel covid = CovidDailyModel.fromJson(json);
       listItems.add(covid);
     });
+    CovidDailyModel temp = listItems[listItems.length -1];
 
     return DailyCovidResponse(
       data: listItems,
+      confirmed:  temp.confirmed,
+      deaths: temp.deaths,
+      recovered: temp.recovered
     );
   }
 

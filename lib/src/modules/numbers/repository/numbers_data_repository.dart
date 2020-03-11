@@ -13,7 +13,8 @@ class NumbersDataRepository {
     var requestUrl = UrlUtils.worldApiUrl;
 
     final response = await _helper.get(requestUrl);
-    WorldListResponse listResponse = WorldListResponse.fromJson(response);
+    WorldListResponse listResponse =
+        WorldListResponse.fromJson(response['data']);
     PreferenceManager().saveWorldListResponse(listResponse);
     await getDailyData();
     return listResponse;
@@ -23,7 +24,8 @@ class NumbersDataRepository {
     var requestUrl = UrlUtils.dailyCovidApiUrl;
 
     final response = await _helper.get(requestUrl);
-    DailyCovidResponse listResponse = DailyCovidResponse.fromJson(response);
+    DailyCovidResponse listResponse =
+        DailyCovidResponse.fromJson(response['data']);
     PreferenceManager().saveDailyCovidResponse(listResponse);
     return listResponse;
   }
