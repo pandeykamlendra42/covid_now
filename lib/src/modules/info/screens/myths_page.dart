@@ -131,7 +131,7 @@ class _MythsPageState extends State<MythsPage> {
   final _FAQListItems = [
     {
       "title": "Hot baths",
-      "desc1": "Taking hot baths will NOT",
+      "desc1": "Taking hot baths will",
       "richText": "NOT",
       "desc2":
           " prevent a person from catching coronavirus. Regardless of the temperature of water, the temperature of the body is the deciding factorl",

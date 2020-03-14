@@ -65,7 +65,7 @@ class _StatsPageState extends State<StatsPage> {
                 margin: EdgeInsets.only(top: 5, bottom: 15),
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  "Countries",
+                  "Statistics",
                   style: TextStyle(
                       fontFamily: CustomAppTheme.fontName,
                       color: Colors.white,
