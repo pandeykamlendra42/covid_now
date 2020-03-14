@@ -54,6 +54,8 @@ class _MainAppState extends State<MainApp> {
           primaryColor: CustomAppTheme.primaryColor,
           accentColor: CustomAppTheme.accentColor,
           primarySwatch: Colors.blue,
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
           scaffoldBackgroundColor: CustomAppTheme.primaryColor,
           pageTransitionsTheme: PageTransitionsTheme(builders: {
             TargetPlatform.android: CupertinoPageTransitionsBuilder(),

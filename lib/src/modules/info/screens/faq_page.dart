@@ -47,24 +47,9 @@ class _FAQPageState extends State<FAQPage> {
     );
   }
 
-  Widget _buildListItem1(BuildContext context, int index) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 20),
-      padding: EdgeInsets.only(top: 5, bottom: 5),
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-          color: const Color(0xff2D4361),
-          borderRadius: BorderRadius.all(Radius.circular(15))),
-      child: ExpandIcon(
-        onPressed: (v) {},
-      ),
-    );
-  }
-
   Widget _buildListItem(BuildContext context, int index) {
     return Container(
       margin: EdgeInsets.only(bottom: 20),
-      padding: EdgeInsets.only(top: 5, bottom: 5),
       alignment: Alignment.center,
       decoration: BoxDecoration(
           color: const Color(0xff2D4361),
@@ -79,6 +64,7 @@ class _FAQPageState extends State<FAQPage> {
         },
         initiallyExpanded: selectedIndex.contains(index),
         backgroundColor: Colors.transparent,
+        
         title: Text(
           _FAQListItems[index]["q"],
           style: TextStyle(
@@ -96,8 +82,8 @@ class _FAQPageState extends State<FAQPage> {
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(15),
-                bottomRight: Radius.circular(15),
+                bottomLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20),
               ),
               color: const Color(0xa12D4361),
             ),

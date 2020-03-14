@@ -49,7 +49,6 @@ class _BasicProtectiveMeasureState extends State<BasicProtectiveMeasure> {
   Widget _buildListItem(BuildContext context, int index) {
     return Container(
       margin: EdgeInsets.only(bottom: 20),
-      padding: EdgeInsets.only(top: 5, bottom: 5),
       alignment: Alignment.center,
       decoration: BoxDecoration(
           color: const Color(0xff2D4361),
