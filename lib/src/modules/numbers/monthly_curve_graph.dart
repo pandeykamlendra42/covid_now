@@ -19,8 +19,8 @@ class MonthlyCurveGraph extends StatefulWidget {
 class MonthlyCurveGraphState extends State<MonthlyCurveGraph> {
   bool isShowingMainData;
   final double barWidth = 7;
-  var dataMaxX = 4.0;
-  var dataMaxY = 10.0;
+  var x_coordinate = 4.0;
+  var y_coordinate = 10.0;
 
   @override
   void initState() {
@@ -52,7 +52,7 @@ class MonthlyCurveGraphState extends State<MonthlyCurveGraph> {
                 margin: EdgeInsets.only(left: 20),
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  "Febraury 2020",
+                  "Monthly",
                   style: TextStyle(
                       fontFamily: CustomAppTheme.fontName,
                       color: Colors.white,
@@ -119,6 +119,8 @@ class MonthlyCurveGraphState extends State<MonthlyCurveGraph> {
                       future: PreferenceManager().getDailyCovidResponse(),
                       builder: (_, AsyncSnapshot<DailyCovidResponse> snapshot) {
                         if (snapshot.hasData) {
+                          print('snapshot data found out');
+                          print(snapshot.data);
                           return _getBarChart(snapshot.data);
                         }
                         return Container();
@@ -151,22 +153,25 @@ class MonthlyCurveGraphState extends State<MonthlyCurveGraph> {
   LineChartData sampleData2(DailyCovidResponse data) {
     List<FlSpot> spots = [];
     List<FlSpot> spotsR = [];
-    dataMaxX = 0;
+    x_coordinate = 0;
+    y_coordinate = 0;
+    double sumY = y_coordinate;
     var tempI = 0, tempR = 0;
     data.data.forEach((covid) {
       var day = int.parse(covid.date
           .substring(covid.date.lastIndexOf("/") + 1, covid.date.length));
       if (covid.confirmed != null && (day % 10) == 0) {
-        dataMaxX += 3.5;
-        dataMaxY = ((covid.confirmed - tempI) / 10000);
+        x_coordinate += 10;
+        y_coordinate = covid.confirmed.toDouble(); //((covid.confirmed - tempI) / 1000);
         tempI = covid.confirmed;
-        spots.add(FlSpot(dataMaxX, dataMaxY));
+        spots.add(FlSpot(x_coordinate, y_coordinate));
       }
       if (covid.recovered != null && (day % 10) == 0) {
-        spotsR.add(FlSpot(dataMaxX, ((covid.recovered - tempR) / 10000)));
+        spotsR.add(FlSpot(x_coordinate, covid.recovered.toDouble()));
         tempR = covid.recovered;
       }
-      print("data(x, y) : ($dataMaxX, $dataMaxY), ${spots.length}");
+      sumY += 1;
+      print("data(x, y) : ($x_coordinate, $y_coordinate), ${spots.length}");
     });
     return LineChartData(
       lineTouchData: const LineTouchData(
@@ -187,12 +192,14 @@ class MonthlyCurveGraphState extends State<MonthlyCurveGraph> {
           ),
           margin: 10,
           getTitles: (value) {
+            // print('value of horizontal tiles');
+            // print(value);
             switch (value.toInt()) {
-              case 2:
+              case 11:
                 return 'Jan';
-              case 7:
+              case 27:
                 return 'Feb';
-              case 12:
+              case 43:
                 return 'Mar';
             }
             return '';
@@ -207,19 +214,41 @@ class MonthlyCurveGraphState extends State<MonthlyCurveGraph> {
             fontSize: 14,
           ),
           getTitles: (value) {
+            // print('value of vertical tiles');
+            // print(value.toInt());
             switch (value.toInt()) {
-              case 1:
-                return '1k';
-              case 2:
+              case 10000:
                 return '10k';
-              case 3:
+              case 25000:
+                return '20k';
+              case 40000:
+                return '40k';
+              case 60000:
                 return '60k';
-              case 4:
+              case 80000:
+                return '80k';
+              case 100000:
                 return '100k';
-              case 5:
-                return '150k';
-              case 6:
-                return '170k';
+              case 120000:
+                return '120k';
+              case 140000:
+                return '140k';
+              case 160000:
+                return '160k';
+              case 180000:
+                return '180k';
+              case 200000:
+                return '200k';
+              case 220000:
+                return '220k';
+              case 240000:
+                return '240k';
+              case 260000:
+                return '260k';
+              case 280000:
+                return '280k';
+              case 300000:
+                return '300k';
             }
             return '';
           },
@@ -245,8 +274,8 @@ class MonthlyCurveGraphState extends State<MonthlyCurveGraph> {
             ),
           )),
       minX: 0,
-      maxX: dataMaxX + 1,
-      maxY: dataMaxY + 1,
+      maxX: x_coordinate + 1,
+      maxY: y_coordinate + 1,
       minY: 0,
       lineBarsData: linesBarData2(spots, spotsR),
     );
