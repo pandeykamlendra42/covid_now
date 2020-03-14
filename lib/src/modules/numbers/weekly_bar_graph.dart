@@ -20,8 +20,8 @@ class WeeklyBarGraph extends StatefulWidget {
 class WeeklyBarGraphState extends State<WeeklyBarGraph> {
   bool isShowingMainData;
   final double barWidth = 7;
-  var dataMaxX = 4;
-  var dataMaxY = 10.0;
+  var x_coordinate = 4;
+  var y_coordinate = 10.0;
   List<String> weekDays = [];
 
   List<BarChartGroupData> rawBarGroups = [];
@@ -172,16 +172,17 @@ class WeeklyBarGraphState extends State<WeeklyBarGraph> {
 
   Widget _getBarChart(DailyCovidResponse data) {
     List<BarChartGroupData> items = [];
-    dataMaxX = 0;
+    x_coordinate = 0;
+    y_coordinate = 0;
     var tempI = 0, tempR = 0, count = 0;
     weekDays.clear();
     data.data.reversed.forEach((covid) {
       if (tempI != 0 && count < 8) {
         if (covid.confirmed != null && covid.recovered != null) {
-          dataMaxX += 3;
-          dataMaxY = ((tempI - covid.confirmed) / 200);
+          x_coordinate += 3;
+          y_coordinate = ((tempI - covid.confirmed) / 1000);
           items.add(makeGroupData(
-              dataMaxX, dataMaxY, (tempR - covid.recovered) / 200));
+              x_coordinate, y_coordinate, (tempR - covid.recovered) / 1000));
         }
         var date = DateFormat("yyyy/MM/dd").parse(covid.date);
         weekDays.add(DateFormat('EE').format(date));
@@ -199,50 +200,7 @@ class WeeklyBarGraphState extends State<WeeklyBarGraph> {
     return BarChart(
       BarChartData(
         maxY: 20,
-        barTouchData: BarTouchData(
-            touchTooltipData: BarTouchTooltipData(
-              tooltipBgColor: Colors.grey,
-              getTooltipItem: (_a, _b, _c, _d) => null,
-            ),
-            touchCallback: (response) {
-              if (response.spot == null) {
-                setState(() {
-                  touchedGroupIndex = -1;
-                  showingBarGroups = List.of(rawBarGroups);
-                });
-                return;
-              }
-
-              touchedGroupIndex = response.spot.touchedBarGroupIndex;
-
-              setState(() {
-                if (response.touchInput is FlLongPressEnd ||
-                    response.touchInput is FlPanEnd) {
-                  touchedGroupIndex = -1;
-                  showingBarGroups = List.of(rawBarGroups);
-                } else {
-                  showingBarGroups = List.of(rawBarGroups);
-                  if (touchedGroupIndex != -1) {
-                    double sum = 0;
-                    for (BarChartRodData rod
-                        in showingBarGroups[touchedGroupIndex].barRods) {
-                      sum += rod.y;
-                    }
-                    final avg = sum /
-                        showingBarGroups[touchedGroupIndex].barRods.length;
-
-                    showingBarGroups[touchedGroupIndex] =
-                        showingBarGroups[touchedGroupIndex].copyWith(
-                      barRods: showingBarGroups[touchedGroupIndex]
-                          .barRods
-                          .map((rod) {
-                        return rod.copyWith(y: avg);
-                      }).toList(),
-                    );
-                  }
-                }
-              });
-            }),
+        barTouchData: BarTouchData(enabled: false),
         titlesData: FlTitlesData(
           show: true,
           bottomTitles: SideTitles(
@@ -270,14 +228,17 @@ class WeeklyBarGraphState extends State<WeeklyBarGraph> {
             margin: 32,
             reservedSize: 14,
             getTitles: (value) {
-              if (value == 0) {
-                return '1K';
-              } else if (value == 10) {
-                return '5K';
-              } else if (value == 19) {
-                return '10K';
-              } else {
-                return '';
+              switch(value.toInt()) {
+                case 0:
+                  return '1k';
+                case 5:
+                  return '5k';
+                case 10:
+                  return '10k';
+                case 15:
+                  return '15k';
+                case 20:
+                  return '20k';
               }
             },
           ),

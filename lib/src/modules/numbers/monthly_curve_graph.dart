@@ -162,12 +162,12 @@ class MonthlyCurveGraphState extends State<MonthlyCurveGraph> {
           .substring(covid.date.lastIndexOf("/") + 1, covid.date.length));
       if (covid.confirmed != null && (day % 10) == 0) {
         x_coordinate += 10;
-        y_coordinate = covid.confirmed.toDouble(); //((covid.confirmed - tempI) / 1000);
+        y_coordinate = covid.confirmed.toDouble()/1000; //((covid.confirmed - tempI) / 1000);
         tempI = covid.confirmed;
         spots.add(FlSpot(x_coordinate, y_coordinate));
       }
       if (covid.recovered != null && (day % 10) == 0) {
-        spotsR.add(FlSpot(x_coordinate, covid.recovered.toDouble()));
+        spotsR.add(FlSpot(x_coordinate, covid.recovered.toDouble()/1000));
         tempR = covid.recovered;
       }
       sumY += 1;
@@ -217,37 +217,17 @@ class MonthlyCurveGraphState extends State<MonthlyCurveGraph> {
             // print('value of vertical tiles');
             // print(value.toInt());
             switch (value.toInt()) {
-              case 10000:
-                return '10k';
-              case 25000:
-                return '20k';
-              case 40000:
-                return '40k';
-              case 60000:
-                return '60k';
-              case 80000:
-                return '80k';
-              case 100000:
+              case 50:
+                return '50k';
+              case 100:
                 return '100k';
-              case 120000:
-                return '120k';
-              case 140000:
-                return '140k';
-              case 160000:
-                return '160k';
-              case 180000:
-                return '180k';
-              case 200000:
+              case 150:
+                return '150k';
+              case 200:
                 return '200k';
-              case 220000:
-                return '220k';
-              case 240000:
-                return '240k';
-              case 260000:
-                return '260k';
-              case 280000:
-                return '280k';
-              case 300000:
+              case 250:
+                return '250k';
+              case 300:
                 return '300k';
             }
             return '';
