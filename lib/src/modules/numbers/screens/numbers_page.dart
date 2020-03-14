@@ -28,7 +28,7 @@ class _NumbersPageState extends State<NumbersPage>
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
+          physics: NeverScrollableScrollPhysics(),
           child: Container(
             padding: EdgeInsets.all(16),
             height: MediaQuery.of(context).size.height,
@@ -51,7 +51,8 @@ class _NumbersPageState extends State<NumbersPage>
           return Container();
         } else {
           listItems = snapshot.data.dailyCovidResponse.data;
-          return Column(
+          return ListView(
+            physics: NeverScrollableScrollPhysics(),
             children: <Widget>[
               Container(
                 margin: EdgeInsets.only(top: 5, bottom: 25),
@@ -71,6 +72,7 @@ class _NumbersPageState extends State<NumbersPage>
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(15))),
                 child: Container(
+                  padding: EdgeInsets.only(left: 30),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
@@ -88,44 +90,24 @@ class _NumbersPageState extends State<NumbersPage>
                       ),
                       Expanded(
                         flex: 1,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            RichText(
-                              text: TextSpan(
-                                  text: "Confirmed\n",
-                                  style: TextStyle(
-                                      fontFamily: CustomAppTheme.fontName,
-                                      color: CustomAppTheme.accentColor,
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 14),
-                                  children: [
-                                    TextSpan(
-                                      text:
-                                          "${numberFormat.format(snapshot.data.worldListResponse.confirmed)}",
-                                      style: TextStyle(
-                                          fontFamily: CustomAppTheme.fontName,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 26),
-                                    )
-                                  ]),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 10, bottom: 10),
-                              child: RichText(
+                        child: Container(
+                          margin: EdgeInsets.only(left: 30, top: 10),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              RichText(
                                 text: TextSpan(
-                                    text: "Recovered\n",
+                                    text: "Confirmed\n",
                                     style: TextStyle(
                                         fontFamily: CustomAppTheme.fontName,
-                                        color: CustomAppTheme.themeGreenColor,
-                                        fontWeight: FontWeight.w600,
+                                        color: CustomAppTheme.accentColor,
+                                        fontWeight: FontWeight.w400,
                                         fontSize: 14),
                                     children: [
                                       TextSpan(
                                         text:
-                                            "${numberFormat.format(snapshot.data.worldListResponse.recovered)}",
+                                            "${numberFormat.format(snapshot.data.worldListResponse.confirmed)}",
                                         style: TextStyle(
                                             fontFamily: CustomAppTheme.fontName,
                                             color: Colors.white,
@@ -134,28 +116,51 @@ class _NumbersPageState extends State<NumbersPage>
                                       )
                                     ]),
                               ),
-                            ),
-                            RichText(
-                              text: TextSpan(
-                                  text: "Deaths\n",
-                                  style: TextStyle(
-                                      fontFamily: CustomAppTheme.fontName,
-                                      color: Color(0xFFC82424),
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 14),
-                                  children: [
-                                    TextSpan(
-                                      text:
-                                          "${numberFormat.format(snapshot.data.worldListResponse.deaths)}",
+                              Padding(
+                                padding: EdgeInsets.only(top: 10, bottom: 10),
+                                child: RichText(
+                                  text: TextSpan(
+                                      text: "Recovered\n",
                                       style: TextStyle(
                                           fontFamily: CustomAppTheme.fontName,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 26),
-                                    )
-                                  ]),
-                            )
-                          ],
+                                          color: CustomAppTheme.themeGreenColor,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 14),
+                                      children: [
+                                        TextSpan(
+                                          text:
+                                              "${numberFormat.format(snapshot.data.worldListResponse.recovered)}",
+                                          style: TextStyle(
+                                              fontFamily: CustomAppTheme.fontName,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 26),
+                                        )
+                                      ]),
+                                ),
+                              ),
+                              RichText(
+                                text: TextSpan(
+                                    text: "Deaths\n",
+                                    style: TextStyle(
+                                        fontFamily: CustomAppTheme.fontName,
+                                        color: Color(0xFFC82424),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 14),
+                                    children: [
+                                      TextSpan(
+                                        text:
+                                            "${numberFormat.format(snapshot.data.worldListResponse.deaths)}",
+                                        style: TextStyle(
+                                            fontFamily: CustomAppTheme.fontName,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 26),
+                                      )
+                                    ]),
+                              )
+                            ],
+                          ),
                         ),
                       )
                     ],
