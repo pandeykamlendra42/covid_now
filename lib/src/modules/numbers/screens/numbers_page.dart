@@ -1,7 +1,8 @@
 import 'package:corona_app/src/core/storage/preferences/preference_manager.dart';
 import 'package:corona_app/src/core/theme/custom_app_theme.dart';
-import 'package:corona_app/src/modules/numbers/models/world_list_response.dart';
-import 'package:corona_app/src/modules/numbers/total_infected_graph.dart';
+import 'package:corona_app/src/core/widgets/pie_chart_donut.dart';
+import 'package:corona_app/src/modules/numbers/models/covid_daily_model.dart';
+import 'package:corona_app/src/modules/numbers/models/covid_response.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -16,6 +17,9 @@ class NumbersPage extends StatefulWidget {
 
 class _NumbersPageState extends State<NumbersPage>
     with AutomaticKeepAliveClientMixin {
+  List<CovidDailyModel> listItems = [];
+  int prevConf = 0, prevRecovered = 0;
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -40,12 +44,13 @@ class _NumbersPageState extends State<NumbersPage>
     var _height = MediaQuery.of(context).size.height;
     var _width = MediaQuery.of(context).size.width;
     final numberFormat = new NumberFormat("#,###,###", "en_US");
-    return FutureBuilder<WorldListResponse>(
-      future: PreferenceManager().getWorldResponse(),
-      builder: (_, AsyncSnapshot<WorldListResponse> snapshot) {
+    return FutureBuilder<CovidResponse>(
+      future: PreferenceManager().getCovidResponse(),
+      builder: (_, AsyncSnapshot<CovidResponse> snapshot) {
         if (!snapshot.hasData) {
           return Container();
         } else {
+          listItems = snapshot.data.dailyCovidResponse.data;
           return Column(
             children: <Widget>[
               Container(
@@ -66,190 +71,245 @@ class _NumbersPageState extends State<NumbersPage>
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(15))),
                 child: Container(
-                  constraints: BoxConstraints(maxHeight: 350),
-                  width: _width * 0.87,
-                  height: _height * 3.3 / 8,
-                  child: TotalInfectedGraph(
-                    listResponse: snapshot.data,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          child: Container(
+                            alignment: Alignment.center,
+                            height: 230,
+                            width: 230,
+                            child: DonutPieChart.withSampleData(
+                                snapshot.data.worldListResponse),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            RichText(
+                              text: TextSpan(
+                                  text: "Confirmed\n",
+                                  style: TextStyle(
+                                      fontFamily: CustomAppTheme.fontName,
+                                      color: CustomAppTheme.accentColor,
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 14),
+                                  children: [
+                                    TextSpan(
+                                      text:
+                                          "${numberFormat.format(snapshot.data.worldListResponse.confirmed)}",
+                                      style: TextStyle(
+                                          fontFamily: CustomAppTheme.fontName,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 26),
+                                    )
+                                  ]),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 10, bottom: 10),
+                              child: RichText(
+                                text: TextSpan(
+                                    text: "Recovered\n",
+                                    style: TextStyle(
+                                        fontFamily: CustomAppTheme.fontName,
+                                        color: CustomAppTheme.themeGreenColor,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 14),
+                                    children: [
+                                      TextSpan(
+                                        text:
+                                            "${numberFormat.format(snapshot.data.worldListResponse.recovered)}",
+                                        style: TextStyle(
+                                            fontFamily: CustomAppTheme.fontName,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 26),
+                                      )
+                                    ]),
+                              ),
+                            ),
+                            RichText(
+                              text: TextSpan(
+                                  text: "Deaths\n",
+                                  style: TextStyle(
+                                      fontFamily: CustomAppTheme.fontName,
+                                      color: Color(0xFFC82424),
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 14),
+                                  children: [
+                                    TextSpan(
+                                      text:
+                                          "${numberFormat.format(snapshot.data.worldListResponse.deaths)}",
+                                      style: TextStyle(
+                                          fontFamily: CustomAppTheme.fontName,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 26),
+                                    )
+                                  ]),
+                            )
+                          ],
+                        ),
+                      )
+                    ],
                   ),
                 ),
               ),
               Container(
-                color: Colors.transparent,
-                height: _height * 1.34 / 4,
-                margin: EdgeInsets.only(top: 18),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Card(
-                      elevation: 1,
-                      color: Colors.transparent,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(15))),
-                      child: Container(
-                        width: _width * 0.4,
-                        decoration: BoxDecoration(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(15)),
-                          gradient: LinearGradient(
-                            colors: const [
-                              // Color(0xff2c274c),
-                              // Color(0xff46426c),
-                              Color(0xff2D4361),
-                              Color(0xff2D4361),
-                            ],
-                            begin: Alignment.bottomCenter,
-                            end: Alignment.topCenter,
-                          ),
-                        ),
-                        padding: EdgeInsets.all(16),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Container(
-                              margin: EdgeInsets.only(bottom: 35),
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                "Total \nDeaths",
-                                style: TextStyle(
-                                    fontFamily: CustomAppTheme.fontName,
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w300),
-                              ),
-                            ),
-                            Container(
-                              alignment: Alignment.centerRight,
-                              height: 50,
-                              padding: EdgeInsets.only(left: 20),
-                              child: FittedBox(
-                                fit: BoxFit.fitWidth,
-                                child: Text(
-                                  "${numberFormat.format(snapshot.data.deaths)}",
-                                  style: TextStyle(
-                                      fontFamily: CustomAppTheme.fontName,
-                                      color: Color(0xFFC82424),
-                                      fontSize: 40,
-                                      fontWeight: FontWeight.w700),
-                                ),
-                              ),
-                            ),
-                            Container(
-                              alignment: Alignment.centerRight,
-                              margin: EdgeInsets.only(
-                                top: 5,
-                              ),
-                              child: RichText(
-                                text: TextSpan(
-                                    text: "${snapshot.data.percentDeath}%",
-                                    style: TextStyle(
-                                        fontFamily: CustomAppTheme.fontName,
-                                        color: Color(0xFFC82424),
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 18),
-                                    children: [
-                                      TextSpan(
-                                        text: " of total",
-                                        style: TextStyle(
-                                            fontFamily: CustomAppTheme.fontName,
-                                            color: Colors.white70,
-                                            fontWeight: FontWeight.w300,
-                                            fontSize: 14),
-                                      )
-                                    ]),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Card(
-                      margin: EdgeInsets.only(left: 20),
-                      elevation: 1,
-                      color: Colors.transparent,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(15))),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(15)),
-                          gradient: LinearGradient(
-                            colors: const [
-                              Color(0xff2D4361),
-                              Color(0xff2D4361),
-                            ],
-                            begin: Alignment.bottomCenter,
-                            end: Alignment.topCenter,
-                          ),
-                        ),
-                        width: _width * 0.4,
-                        padding: EdgeInsets.all(16),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Container(
-                              margin: EdgeInsets.only(bottom: 35),
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                "Total \nRecovered",
-                                style: TextStyle(
-                                    fontFamily: CustomAppTheme.fontName,
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w300),
-                              ),
-                            ),
-                            Container(
-                              alignment: Alignment.centerRight,
-                              height: 50,
-                              padding: EdgeInsets.only(left: 20),
-                              child: FittedBox(
-                                fit: BoxFit.fitWidth,
-                                child: Text(
-                                  "${numberFormat.format(snapshot.data.recovered)}",
-                                  style: TextStyle(
-                                      fontFamily: CustomAppTheme.fontName,
-                                      color: Color(0xffB7F86D),
-                                      fontSize: 40,
-                                      fontWeight: FontWeight.w700),
-                                  maxLines: 1,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              alignment: Alignment.centerRight,
-                              margin: EdgeInsets.only(top: 5),
-                              child: RichText(
-                                text: TextSpan(
-                                    text: "${snapshot.data.percentRecovered}%",
-                                    style: TextStyle(
-                                        fontFamily: CustomAppTheme.fontName,
-                                        color: Color(0xffB7F86D),
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 18),
-                                    children: [
-                                      TextSpan(
-                                        text: " of total",
-                                        style: TextStyle(
-                                            fontFamily: CustomAppTheme.fontName,
-                                            color: Colors.white70,
-                                            fontWeight: FontWeight.w300,
-                                            fontSize: 14),
-                                      )
-                                    ]),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
+                alignment: Alignment.centerLeft,
+                padding: EdgeInsets.only(top: 35, bottom: 10),
+                child: Text(
+                  "Daily Updates",
+                  style: TextStyle(
+                      color: CustomAppTheme.accentColor,
+                      fontFamily: CustomAppTheme.fontName,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16),
                 ),
+              ),
+              Container(
+                height: _height * 0.6,
+                alignment: Alignment.center,
+                padding: EdgeInsets.only(bottom: 150),
+                child: ListView.builder(
+                    reverse: true,
+                    physics: BouncingScrollPhysics(),
+                    itemCount: listItems.length,
+                    itemBuilder: (BuildContext ctxt, int index) {
+                      return _buildListBuilder(
+                          listItems[index],
+                          listItems[(index + 1 < listItems.length
+                              ? index + 1
+                              : index)],
+                          numberFormat);
+                    }),
               )
             ],
           );
         }
       },
+    );
+  }
+
+  Widget _buildListBuilder(CovidDailyModel model, CovidDailyModel nextModel,
+      NumberFormat numberformat) {
+    var dateTime = DateFormat("yyyy/mm/dd").parse(model.date);
+    int confirmed = model.confirmed, recovered = model.recovered;
+    bool isUpIconConf = false, isUpIconRec = false;
+    if (model != nextModel) {
+      confirmed = nextModel.confirmed - model.confirmed;
+      isUpIconConf = prevConf < confirmed;
+      prevConf = confirmed;
+      recovered = nextModel.recovered - model.recovered;
+      isUpIconRec = prevRecovered < recovered;
+      prevRecovered = recovered;
+    } else {
+      return Container();
+    }
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(Radius.circular(5)),
+        gradient: LinearGradient(
+          colors: const [
+            Color(0xff2D4361),
+            Color(0xff2D4361),
+          ],
+          begin: Alignment.bottomCenter,
+          end: Alignment.topCenter,
+        ),
+      ),
+      margin: EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 10),
+      padding: EdgeInsets.all(8),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Expanded(
+            flex: 1,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(top: 5, bottom: 5),
+                  child: Text(
+                    "${DateFormat("d MMM yyyy").format(dateTime)}",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: CustomAppTheme.fontName,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 14),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 10),
+                  child: Text(
+                    "Total ${numberformat.format(model.chinaConf)} case in China and ${numberformat.format(model.otherLocationConf)} on the other location",
+                    style: TextStyle(
+                        color: Colors.white60,
+                        fontSize: 14,
+                        fontFamily: CustomAppTheme.fontName),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 5),
+                  child: Row(
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(right: 5),
+                        child: Icon(
+                          isUpIconConf
+                              ? Icons.arrow_upward
+                              : Icons.arrow_downward,
+                          color: CustomAppTheme.accentColor,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 5, right: 15),
+                        child: Text(
+                          "Confirmed : ${numberformat.format(confirmed)}",
+                          style: TextStyle(
+                              color: CustomAppTheme.themeYellowColor,
+                              fontFamily: CustomAppTheme.fontName,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(5),
+                        child: Icon(
+                          isUpIconRec
+                              ? Icons.arrow_upward
+                              : Icons.arrow_downward,
+                          color: CustomAppTheme.accentColor,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 5, right: 0),
+                        child: Text(
+                          "Recovered : ${numberformat.format(recovered)}",
+                          style: TextStyle(
+                              color: CustomAppTheme.themeGreenColor,
+                              fontFamily: CustomAppTheme.fontName,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 

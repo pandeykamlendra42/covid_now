@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:corona_app/src/core/storage/preferences/preferences_key.dart';
+import 'package:corona_app/src/modules/numbers/models/covid_response.dart';
 import 'package:corona_app/src/modules/numbers/models/daily_covid_response.dart';
 import 'package:corona_app/src/modules/numbers/models/world_list_response.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -63,6 +64,28 @@ class PreferenceManager {
         ? DailyCovidResponse.fromJson(
             jsonDecode(worldInfo) as Map<String, dynamic>)
         : null;
+  }
+
+  Future<CovidResponse> getCovidResponse() async {
+    _sharedPreferences = await SharedPreferences.getInstance();
+    String worldInfo =
+    _sharedPreferences.getString(PreferencesKey.dailyCovidResponse);
+    print(
+        "sharedPreferences = await SharedPreferences.getInstance();::  $worldInfo");
+    var dailyCovid = worldInfo != null && worldInfo.isNotEmpty
+        ? DailyCovidResponse.fromJson(
+        jsonDecode(worldInfo) as Map<String, dynamic>)
+        : null;
+
+    String worldListIfo =
+    _sharedPreferences.getString(PreferencesKey.worldListResponse);
+    print(
+        "sharedPreferences = await SharedPreferences.getInstance();::  $worldInfo");
+    var worldList = worldListIfo != null && worldListIfo.isNotEmpty
+        ? WorldListResponse.fromJson(
+        jsonDecode(worldListIfo) as Map<String, dynamic>)
+        : null;
+    return CovidResponse(dailyCovidResponse: dailyCovid, worldListResponse: worldList);
   }
 
   Future<bool> clearAll() async {
