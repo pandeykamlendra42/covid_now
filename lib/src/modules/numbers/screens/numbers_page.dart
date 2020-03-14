@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:corona_app/src/core/storage/preferences/preference_manager.dart';
 import 'package:corona_app/src/core/theme/custom_app_theme.dart';
 import 'package:corona_app/src/core/widgets/pie_chart_donut.dart';
@@ -19,6 +21,7 @@ class _NumbersPageState extends State<NumbersPage>
     with AutomaticKeepAliveClientMixin {
   List<CovidDailyModel> listItems = [];
   int prevConf = 0, prevRecovered = 0;
+  ScrollController _scrollController = new ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +54,7 @@ class _NumbersPageState extends State<NumbersPage>
           return Container();
         } else {
           listItems = snapshot.data.dailyCovidResponse.data;
+          Timer(Duration(milliseconds: 200), () => _scrollController.jumpTo(_scrollController.position.maxScrollExtent));
           return ListView(
             physics: NeverScrollableScrollPhysics(),
             children: <Widget>[
@@ -185,10 +189,11 @@ class _NumbersPageState extends State<NumbersPage>
                 padding: EdgeInsets.only(bottom: 150),
                 child: ListView.builder(
                     reverse: true,
+                    controller: _scrollController,
                     physics: BouncingScrollPhysics(),
                     itemCount: listItems.length,
-                    itemBuilder: (BuildContext ctxt, int index) {
-                      return _buildListBuilder(
+                    itemBuilder: (BuildContext ctx, int index) {
+                      return _buildListItem(
                           listItems[index],
                           listItems[(index + 1 < listItems.length
                               ? index + 1
@@ -203,9 +208,9 @@ class _NumbersPageState extends State<NumbersPage>
     );
   }
 
-  Widget _buildListBuilder(CovidDailyModel model, CovidDailyModel nextModel,
+  Widget _buildListItem(CovidDailyModel model, CovidDailyModel nextModel,
       NumberFormat numberformat) {
-    var dateTime = DateFormat("yyyy/mm/dd").parse(model.date);
+    var dateTime = DateFormat("yyyy/MM/dd").parse(model.date);
     int confirmed = model.confirmed, recovered = model.recovered;
     bool isUpIconConf = false, isUpIconRec = false;
     if (model != nextModel) {
