@@ -261,7 +261,7 @@ class _NumbersPageState extends State<NumbersPage>
                 Padding(
                   padding: EdgeInsets.only(top: 10),
                   child: Text(
-                    "Total ${numberformat.format(model.chinaConf)} case in China and ${numberformat.format(model.otherLocationConf)} on the other location",
+                    "Total ${numberformat.format(model.chinaConf)} cases in China and ${numberformat.format(model.otherLocationConf)} at other locations",
                     style: TextStyle(
                         color: Colors.white60,
                         fontSize: 14,
