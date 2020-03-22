@@ -1,4 +1,5 @@
 import 'package:corona_app/src/core/theme/custom_app_theme.dart';
+import 'package:corona_app/src/core/widgets/disclaimer_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -22,7 +23,9 @@ class _BasicProtectiveMeasureState extends State<BasicProtectiveMeasure> {
         iconTheme: IconThemeData(color: Colors.white),
         actions: <Widget>[
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, DisclaimerPage.routeName);
+            },
             icon: Icon(
               Icons.info_outline,
               color: Colors.white,

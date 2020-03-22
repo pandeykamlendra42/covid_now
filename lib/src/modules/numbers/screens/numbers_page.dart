@@ -20,7 +20,7 @@ class NumbersPage extends StatefulWidget {
 class _NumbersPageState extends State<NumbersPage>
     with AutomaticKeepAliveClientMixin {
   List<CovidDailyModel> listItems = [];
-  int prevConf = 0, prevRecovered = 0;
+  int prevTotalConf = 0, prevTotalRec = 0, prevConf = 0, prevRecovered = 0;
   ScrollController _scrollController = new ScrollController();
 
   @override
@@ -33,7 +33,7 @@ class _NumbersPageState extends State<NumbersPage>
         body: SingleChildScrollView(
           physics: NeverScrollableScrollPhysics(),
           child: Container(
-            padding: EdgeInsets.all(16),
+            padding: EdgeInsets.only(left: 10, right: 10, top: 16, bottom: 16),
             height: MediaQuery.of(context).size.height,
             color: CustomAppTheme.primaryColor,
             child: _buildInfoWidget(),
@@ -54,7 +54,7 @@ class _NumbersPageState extends State<NumbersPage>
           return Container();
         } else {
           listItems = snapshot.data.dailyCovidResponse.data;
-          Timer(Duration(milliseconds: 200), () => _scrollController.jumpTo(_scrollController.position.maxScrollExtent));
+          //Timer(Duration(milliseconds: 200), () => _scrollController.jumpTo(_scrollController.position.maxScrollExtent));
           return ListView(
             physics: NeverScrollableScrollPhysics(),
             children: <Widget>[
@@ -188,17 +188,16 @@ class _NumbersPageState extends State<NumbersPage>
                 alignment: Alignment.center,
                 padding: EdgeInsets.only(bottom: 150),
                 child: ListView.builder(
-                    reverse: true,
                     controller: _scrollController,
                     physics: BouncingScrollPhysics(),
                     itemCount: listItems.length,
                     itemBuilder: (BuildContext ctx, int index) {
                       return _buildListItem(
-                          listItems[index],
-                          listItems[(index + 1 < listItems.length
-                              ? index + 1
-                              : index)],
-                          numberFormat);
+                          listItems[listItems.length - (index + 1)],
+                          listItems[(index + 2 < listItems.length
+                              ? listItems.length - (index + 2)
+                              : listItems.length - (index + 1))],
+                          numberFormat, index);
                     }),
               )
             ],
@@ -209,20 +208,22 @@ class _NumbersPageState extends State<NumbersPage>
   }
 
   Widget _buildListItem(CovidDailyModel model, CovidDailyModel nextModel,
-      NumberFormat numberformat) {
+      NumberFormat numberformat, int index) {
     var dateTime = DateFormat("yyyy/MM/dd").parse(model.date);
     int confirmed = model.confirmed, recovered = model.recovered;
     bool isUpIconConf = false, isUpIconRec = false;
-    if (model != nextModel) {
-      confirmed = nextModel.confirmed - model.confirmed;
+
+    if (index != listItems.length - 1 && model != nextModel) {
+      confirmed = model.confirmed - nextModel.confirmed;
       isUpIconConf = prevConf < confirmed;
       prevConf = confirmed;
-      recovered = nextModel.recovered - model.recovered;
+      recovered = model.recovered - nextModel.recovered;
       isUpIconRec = prevRecovered < recovered;
       prevRecovered = recovered;
-    } else {
-      return Container();
     }
+
+    prevTotalConf = model.confirmed;
+    prevTotalRec = model.recovered;
     return Container(
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(5)),
@@ -235,7 +236,7 @@ class _NumbersPageState extends State<NumbersPage>
           end: Alignment.topCenter,
         ),
       ),
-      margin: EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 10),
+      margin: EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 10),
       padding: EdgeInsets.all(8),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -273,7 +274,7 @@ class _NumbersPageState extends State<NumbersPage>
                   child: Row(
                     children: <Widget>[
                       Padding(
-                        padding: EdgeInsets.only(right: 5),
+                        padding: EdgeInsets.only(right: 3),
                         child: Icon(
                           isUpIconConf
                               ? Icons.arrow_upward
@@ -281,15 +282,22 @@ class _NumbersPageState extends State<NumbersPage>
                           color: CustomAppTheme.accentColor,
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 5, right: 15),
-                        child: Text(
-                          "Confirmed : ${numberformat.format(confirmed)}",
-                          style: TextStyle(
-                              color: CustomAppTheme.themeYellowColor,
-                              fontFamily: CustomAppTheme.fontName,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14),
+                      Expanded(
+                        flex: 1,
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 5, right: 10),
+                          child: FittedBox(
+                            fit: BoxFit.fitWidth,
+                            child: Text(
+                              "Confirmed : ${numberformat.format(confirmed)}",
+                              style: TextStyle(
+                                  color: CustomAppTheme.themeYellowColor,
+                                  fontFamily: CustomAppTheme.fontName,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14),
+                              textAlign: TextAlign.start,
+                            ),
+                          ),
                         ),
                       ),
                       Padding(
@@ -301,15 +309,22 @@ class _NumbersPageState extends State<NumbersPage>
                           color: CustomAppTheme.accentColor,
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 5, right: 0),
-                        child: Text(
-                          "Recovered : ${numberformat.format(recovered)}",
-                          style: TextStyle(
-                              color: CustomAppTheme.themeGreenColor,
-                              fontFamily: CustomAppTheme.fontName,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14),
+                      Expanded(
+                        flex: 1,
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 3, right: 10),
+                          child: FittedBox(
+                            fit: BoxFit.fitWidth,
+                            child: Text(
+                              "Recovered : ${numberformat.format(recovered)}",
+                              style: TextStyle(
+                                  color: CustomAppTheme.themeGreenColor,
+                                  fontFamily: CustomAppTheme.fontName,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14),
+                              textAlign: TextAlign.start,
+                            ),
+                          ),
                         ),
                       ),
                     ],

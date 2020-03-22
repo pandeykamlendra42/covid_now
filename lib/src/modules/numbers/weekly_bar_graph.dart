@@ -174,6 +174,7 @@ class WeeklyBarGraphState extends State<WeeklyBarGraph> {
     List<BarChartGroupData> items = [];
     x_coordinate = 0;
     y_coordinate = 0;
+    var maxY = 20.0;
     var tempI = 0, tempR = 0, count = 0;
     weekDays.clear();
     data.data.reversed.forEach((covid) {
@@ -181,6 +182,7 @@ class WeeklyBarGraphState extends State<WeeklyBarGraph> {
         if (covid.confirmed != null && covid.recovered != null) {
           x_coordinate += 3;
           y_coordinate = ((tempI - covid.confirmed) / 1000);
+          maxY = y_coordinate > maxY ? y_coordinate : maxY;
           items.add(makeGroupData(
               x_coordinate, y_coordinate, (tempR - covid.recovered) / 1000));
         }
@@ -199,7 +201,7 @@ class WeeklyBarGraphState extends State<WeeklyBarGraph> {
     showingBarGroups = rawBarGroups;
     return BarChart(
       BarChartData(
-        maxY: 20,
+        maxY: maxY + 5,
         barTouchData: BarTouchData(enabled: false),
         titlesData: FlTitlesData(
           show: true,
@@ -231,14 +233,16 @@ class WeeklyBarGraphState extends State<WeeklyBarGraph> {
               switch(value.toInt()) {
                 case 0:
                   return '1k';
-                case 5:
-                  return '5k';
                 case 10:
                   return '10k';
-                case 15:
-                  return '15k';
                 case 20:
                   return '20k';
+                case 30:
+                  return '30k';
+                case 40:
+                  return '40k';
+                case 50:
+                  return '50k';
               }
             },
           ),
